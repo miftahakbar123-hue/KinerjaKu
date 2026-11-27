@@ -428,81 +428,8 @@ footer {
     font-size: 11px;
 }
 
-/* RESPONSIVE */
 
-@media (max-width: 1000px) {
-    .sidebar {
-        width: 210px;
-    }
-
-    .main-content {
-        margin-left: 210px;
-        width: calc(100% - 210px);
-        padding: 25px;
-    }
-
-    .input-grid {
-        grid-template-columns: 1fr;
-        gap: 5px;
-    }
-}
-
-@media (max-width: 600px) {
-    .container {
-        display: block;
-    }
-
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        padding: 18px;
-    }
-
-    .logo {
-        margin-bottom: 18px;
-    }
-
-    .sidebar nav {
-        gap: 5px;
-    }
-
-    .sidebar nav a {
-        padding: 10px;
-    }
-
-    .sidebar-footer {
-        display: none;
-    }
-
-    .main-content {
-        width: 100%;
-        margin-left: 0;
-        padding: 18px;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .header h1 {
-        font-size: 21px;
-    }
-
-    .welcome {
-        padding: 25px;
-    }
-
-    .welcome h2 {
-        font-size: 20px;
-    }
-
-    .card {
-        padding: 20px;
-    }
-   /* =================================
+/* =================================
    HALAMAN LOGIN
 ================================= */
 
@@ -512,7 +439,12 @@ footer {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background: linear-gradient(135deg, #142b45, #2463a8, #159b91);
+    background: linear-gradient(
+        135deg,
+        #142b45,
+        #2463a8,
+        #159b91
+    );
 }
 
 .login-card {
@@ -599,6 +531,8 @@ footer {
     color: #8291a3;
 }
 
+/* TOMBOL LOGOUT */
+
 .btn-logout {
     background: #fff0f0;
     color: #d93025;
@@ -610,7 +544,90 @@ footer {
     background: #ffe0e0;
 }
 
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 1000px) {
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .main-content {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+        padding: 25px;
+    }
+
+    .input-grid {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        display: block;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 18px;
+    }
+
+    .logo {
+        margin-bottom: 18px;
+    }
+
+    .sidebar nav {
+        gap: 5px;
+    }
+
+    .sidebar nav a {
+        padding: 10px;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 18px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .welcome {
+        padding: 25px;
+    }
+
+    .welcome h2 {
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
     .button-group {
+        flex-wrap: wrap;
+    }
+
+    .profile {
         flex-wrap: wrap;
     }
 }
