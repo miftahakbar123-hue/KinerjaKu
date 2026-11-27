@@ -10,8 +10,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- HALAMAN LOGIN -->
+<div id="halamanLogin" class="login-page">
+    <div class="login-card">
+        <div class="login-logo">K</div>
+        <h1>KinerjaKu</h1>
+        <p>Sistem Penilaian Kinerja Karyawan</p>
 
-    <div class="container">
+        <form id="formLogin">
+            <div class="login-group">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Masukkan username"
+                    required
+                >
+            </div>
+
+            <div class="login-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Masukkan password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-button">
+                Login
+            </button>
+
+            <p id="pesanLogin"></p>
+        </form>
+
+        <small>© 2026 KinerjaKu</small>
+    </div>
+</div>
+
+    <div class="container"> id="halamanDashboard">
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
@@ -44,9 +82,17 @@
                 </div>
 
                 <div class="profile">
-                    <span>👤</span>
-                    <span>Administrator</span>
-                </div>
+    <span>👤</span>
+    <span id="namaPengguna">Administrator</span>
+
+    <button
+        type="button"
+        id="tombolLogout"
+        class="btn-logout"
+    >
+        Logout
+    </button>
+</div>
             </header>
 
             <!-- WELCOME -->
