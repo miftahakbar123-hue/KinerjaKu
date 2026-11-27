@@ -380,6 +380,75 @@ form.addEventListener("reset", function() {
                 Silakan masukkan nilai karyawan
                 dan klik Hitung Kinerja.
             </p>
+            /* =================================
+   FITUR LOGIN DAN LOGOUT KINERJAKU
+================================= */
+
+// Username dan password untuk demonstrasi
+const usernameBenar = "admin";
+const passwordBenar = "12345";
+
+// Mengambil elemen HTML
+const halamanLogin = document.getElementById("halamanLogin");
+const halamanDashboard = document.getElementById("halamanDashboard");
+const formLogin = document.getElementById("formLogin");
+const tombolLogout = document.getElementById("tombolLogout");
+const pesanLogin = document.getElementById("pesanLogin");
+const namaPengguna = document.getElementById("namaPengguna");
+
+// Fungsi menampilkan halaman sesuai status login
+function periksaLogin() {
+    const statusLogin = sessionStorage.getItem("statusLogin");
+
+    if (statusLogin === "aktif") {
+        halamanLogin.style.display = "none";
+        halamanDashboard.style.display = "flex";
+
+        namaPengguna.textContent =
+            sessionStorage.getItem("usernameAktif") || "Administrator";
+    } else {
+        halamanLogin.style.display = "flex";
+        halamanDashboard.style.display = "none";
+    }
+}
+
+// Proses ketika tombol Login ditekan
+formLogin.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (
+        username === usernameBenar &&
+        password === passwordBenar
+    ) {
+        sessionStorage.setItem("statusLogin", "aktif");
+        sessionStorage.setItem("usernameAktif", username);
+
+        pesanLogin.textContent = "";
+
+        periksaLogin();
+    } else {
+        pesanLogin.textContent =
+            "Username atau password salah!";
+
+        document.getElementById("password").value = "";
+    }
+});
+
+// Proses ketika tombol Logout ditekan
+tombolLogout.addEventListener("click", function() {
+    sessionStorage.removeItem("statusLogin");
+    sessionStorage.removeItem("usernameAktif");
+
+    formLogin.reset();
+
+    periksaLogin();
+});
+
+// Memeriksa status login ketika halaman dibuka
+periksaLogin();
 
         </div>
     `;
