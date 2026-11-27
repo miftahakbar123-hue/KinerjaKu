@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KinerjaKu - Penilaian Karyawan</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">K</span>
+                <h2>KinerjaKu</h2>
+            </div>
+
+            <nav>
+                <a href="#" class="menu-active">Dashboard</a>
+                <a href="#penilaian">Penilaian Karyawan</a>
+                <a href="#hasil">Hasil Penilaian</a>
+                <a href="#tentang">Tentang Sistem</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Artificial Intelligence</p>
+                <small>Fuzzy Mamdani</small>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- HEADER -->
+            <header class="header">
+                <div>
+                    <h1>Dashboard Penilaian</h1>
+                    <p>Sistem Penilaian Kinerja Karyawan</p>
+                </div>
+
+                <div class="profile">
+                    <span>👤</span>
+                    <span>Administrator</span>
+                </div>
+            </header>
+
+            <!-- WELCOME -->
+            <section class="welcome">
+                <h2>Selamat Datang di KinerjaKu!</h2>
+                <p>
+                    Aplikasi penilaian kinerja karyawan menggunakan
+                    metode Fuzzy Logic Mamdani.
+                </p>
+            </section>
+
+            <!-- INPUT PENILAIAN -->
+            <section class="card" id="penilaian">
+
+                <div class="section-title">
+                    <h2>Input Penilaian Karyawan</h2>
+                    <p>Masukkan nilai setiap aspek kinerja karyawan.</p>
+                </div>
+
+                <form id="formPenilaian">
+
+                    <div class="form-group">
+                        <label for="nama">Nama Karyawan</label>
+                        <input
+                            type="text"
+                            id="nama"
+                            placeholder="Masukkan nama karyawan"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-grid">
+
+                        <div class="form-group">
+                            <label for="disiplin">
+                                Kedisiplinan (0-100)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="disiplin"
+                                min="0"
+                                max="100"
+                                placeholder="Contoh: 80"
+                                required
+                            >
+
+                            <small>
+                                Penilaian kedisiplinan karyawan
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produktivitas">
+                                Produktivitas (0-100)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="produktivitas"
+                                min="0"
+                                max="100"
+                                placeholder="Contoh: 85"
+                                required
+                            >
+
+                            <small>
+                                Penilaian hasil kerja karyawan
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tanggungJawab">
+                                Tanggung Jawab (0-100)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tanggungJawab"
+                                min="0"
+                                max="100"
+                                placeholder="Contoh: 90"
+                                required
+                            >
+
+                            <small>
+                                Penilaian tanggung jawab karyawan
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">
+                            Hitung Kinerja
+                        </button>
+
+                        <button type="reset" class="btn-secondary">
+                            Reset
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- HASIL PENILAIAN -->
+            <section class="card result-card" id="hasil">
+
+                <div class="section-title">
+                    <h2>Hasil Penilaian</h2>
+                    <p>Hasil perhitungan sistem fuzzy.</p>
+                </div>
+
+                <div id="hasilPenilaian">
+
+                    <div class="result-placeholder">
+                        <div class="result-icon">📊</div>
+
+                        <h3>Belum Ada Penilaian</h3>
+
+                        <p>
+                            Silakan masukkan nilai karyawan
+                            dan klik Hitung Kinerja.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- TENTANG -->
+            <section class="card" id="tentang">
+
+                <div class="section-title">
+                    <h2>Tentang Sistem</h2>
+                </div>
+
+                <p>
+                    KinerjaKu merupakan sistem penilaian kinerja
+                    karyawan menggunakan metode Fuzzy Mamdani.
+                    Sistem ini menggunakan tiga variabel input,
+                    yaitu kedisiplinan, produktivitas, dan
+                    tanggung jawab, untuk menghasilkan kategori
+                    kinerja karyawan.
+                </p>
+
+            </section>
+
+            <footer>
+                <p>
+                    © 2026 KinerjaKu |
+                    Sistem Penilaian Kinerja Karyawan
+                    Menggunakan Fuzzy Mamdani
+                </p>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
