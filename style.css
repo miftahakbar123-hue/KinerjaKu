@@ -429,107 +429,190 @@ footer {
 }
 
 
-/* =================================
-   HALAMAN LOGIN
-================================= */
+
+/* =========================================
+   HALAMAN LOGIN - KINERJAKU DASHBOARD THEME
+========================================= */
 
 .login-page {
     min-height: 100vh;
     display: none;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    background: linear-gradient(
-        135deg,
-        #142b45,
-        #2463a8,
-        #159b91
-    );
+    padding: 30px;
+    background: #f3f6fa;
+    position: relative;
+    overflow: hidden;
 }
+
+/* Dekorasi background */
+
+.login-page::before {
+    content: "";
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: rgba(36, 99, 168, 0.07);
+    top: -220px;
+    right: -100px;
+}
+
+.login-page::after {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: rgba(21, 155, 145, 0.07);
+    bottom: -180px;
+    left: -100px;
+}
+
+/* Card Login */
 
 .login-card {
+    position: relative;
+    z-index: 1;
     width: 100%;
-    max-width: 400px;
-    background: white;
-    padding: 40px 35px;
+    max-width: 430px;
+    background: #ffffff;
+    padding: 42px;
     border-radius: 18px;
-    text-align: center;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e6ebf1;
+    box-shadow: 0 12px 35px rgba(31, 55, 80, 0.08);
+    text-align: left;
 }
 
+/* Logo */
+
 .login-logo {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 15px;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 25px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     background: #159b91;
     color: white;
-    font-size: 30px;
+    border-radius: 13px;
+    font-size: 26px;
     font-weight: 800;
-    border-radius: 15px;
 }
+
+/* Judul */
 
 .login-card h1 {
     color: #142b45;
+    font-size: 27px;
+    font-weight: 800;
     margin-bottom: 5px;
+    letter-spacing: -0.7px;
 }
 
 .login-card > p {
     color: #8291a3;
     font-size: 13px;
-    margin-bottom: 28px;
+    margin-bottom: 30px;
 }
 
+/* Input Login */
+
 .login-group {
-    text-align: left;
-    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 20px;
 }
 
 .login-group label {
-    display: block;
     color: #142b45;
     font-size: 13px;
     font-weight: 700;
-    margin-bottom: 8px;
 }
 
 .login-group input {
     width: 100%;
-    padding: 13px;
+    padding: 14px 15px;
+    background: #f8fafc;
     border: 1px solid #dce4ec;
-    border-radius: 9px;
-    font-family: inherit;
+    border-radius: 10px;
     outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: #26384b;
+    transition: 0.25s;
+}
+
+.login-group input::placeholder {
+    color: #aab5c1;
 }
 
 .login-group input:focus {
+    background: white;
     border-color: #159b91;
+    box-shadow: 0 0 0 3px rgba(21, 155, 145, 0.10);
 }
+
+/* Tombol Login */
 
 .login-button {
     width: 100%;
+    padding: 14px;
+    margin-top: 8px;
     background: #159b91;
     color: white;
-    margin-top: 8px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(21, 155, 145, 0.15);
+    transition: 0.25s;
 }
 
 .login-button:hover {
     background: #107d75;
+    transform: translateY(-2px);
 }
+
+/* Pesan Login */
 
 #pesanLogin {
     color: #d93025;
     font-size: 12px;
-    margin-top: 12px;
+    margin-top: 13px;
+    min-height: 18px;
 }
+
+/* Footer Login */
 
 .login-card small {
     display: block;
-    margin-top: 25px;
+    text-align: center;
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid #e6ebf1;
     color: #8291a3;
+    font-size: 11px;
 }
+
+/* Tampilan HP */
+
+@media (max-width: 600px) {
+    .login-page {
+        padding: 20px;
+    }
+
+    .login-card {
+        padding: 30px 24px;
+    }
+
+    .login-card h1 {
+        font-size: 24px;
+    }
+}
+
 
 /* TOMBOL LOGOUT */
 
