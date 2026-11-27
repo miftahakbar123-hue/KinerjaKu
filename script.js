@@ -1,7 +1,7 @@
 
 /* =========================================
-   KINERJAKU
-   SISTEM FUZZY LOGIC METODE MAMDANI
+   KINERJAKU - FUZZY MAMDANI
+   LOGIN ADMIN DAN KARYAWAN
 ========================================= */
 
 
@@ -9,31 +9,23 @@
    BAGIAN A: PERHITUNGAN FUZZY MAMDANI
 ========================================= */
 
-// 1. FUNGSI KEANGGOTAAN FUZZY
-
 function keanggotaanRendah(nilai) {
     if (nilai <= 30) return 1;
     if (nilai >= 50) return 0;
-
     return (50 - nilai) / 20;
 }
 
 function keanggotaanSedang(nilai) {
     if (nilai <= 30 || nilai >= 70) return 0;
     if (nilai <= 50) return (nilai - 30) / 20;
-
     return (70 - nilai) / 20;
 }
 
 function keanggotaanTinggi(nilai) {
     if (nilai <= 50) return 0;
     if (nilai >= 70) return 1;
-
     return (nilai - 50) / 20;
 }
-
-
-// 2. PROSES FUZZIFIKASI
 
 function fuzzifikasi(nilai) {
     return {
@@ -43,16 +35,12 @@ function fuzzifikasi(nilai) {
     };
 }
 
-
-// 3. MEMBUAT 27 ATURAN FUZZY
-
 const himpunan = ["rendah", "sedang", "tinggi"];
 const aturanFuzzy = [];
 
 for (let disiplin of himpunan) {
     for (let produktivitas of himpunan) {
         for (let tanggungJawab of himpunan) {
-
             const jumlah =
                 himpunan.indexOf(disiplin) +
                 himpunan.indexOf(produktivitas) +
@@ -78,9 +66,6 @@ for (let disiplin of himpunan) {
     }
 }
 
-
-// 4. INFERENSI MAMDANI
-
 function inferensiMamdani(
     fuzzyDisiplin,
     fuzzyProduktivitas,
@@ -95,68 +80,41 @@ function inferensiMamdani(
     let aturanAktif = 0;
 
     for (let aturan of aturanFuzzy) {
-
-        const nilaiDisiplin =
-            fuzzyDisiplin[aturan.disiplin];
-
+        const nilaiDisiplin = fuzzyDisiplin[aturan.disiplin];
         const nilaiProduktivitas =
             fuzzyProduktivitas[aturan.produktivitas];
-
         const nilaiTanggungJawab =
             fuzzyTanggungJawab[aturan.tanggungJawab];
 
-        // Operator AND menggunakan MIN
         const alpha = Math.min(
             nilaiDisiplin,
             nilaiProduktivitas,
             nilaiTanggungJawab
         );
 
-        if (alpha > 0) {
-            aturanAktif++;
-        }
+        if (alpha > 0) aturanAktif++;
 
-        // Agregasi menggunakan MAX
         hasilAgregasi[aturan.output] = Math.max(
             hasilAgregasi[aturan.output],
             alpha
         );
     }
 
-    return {
-        hasilAgregasi,
-        aturanAktif
-    };
+    return { hasilAgregasi, aturanAktif };
 }
-
-
-// 5. FUNGSI KEANGGOTAAN OUTPUT
 
 function keanggotaanOutput(kategori, nilai) {
-    if (kategori === "buruk") {
-        return keanggotaanRendah(nilai);
-    }
-
-    if (kategori === "cukup") {
-        return keanggotaanSedang(nilai);
-    }
-
-    if (kategori === "baik") {
-        return keanggotaanTinggi(nilai);
-    }
-
+    if (kategori === "buruk") return keanggotaanRendah(nilai);
+    if (kategori === "cukup") return keanggotaanSedang(nilai);
+    if (kategori === "baik") return keanggotaanTinggi(nilai);
     return 0;
 }
-
-
-// 6. DEFUZZIFIKASI CENTROID
 
 function defuzzifikasi(hasilAgregasi) {
     let pembilang = 0;
     let penyebut = 0;
 
     for (let x = 0; x <= 100; x += 0.5) {
-
         const buruk = Math.min(
             hasilAgregasi.buruk,
             keanggotaanOutput("buruk", x)
@@ -172,43 +130,22 @@ function defuzzifikasi(hasilAgregasi) {
             keanggotaanOutput("baik", x)
         );
 
-        const nilaiFuzzy = Math.max(
-            buruk,
-            cukup,
-            baik
-        );
+        const nilaiFuzzy = Math.max(buruk, cukup, baik);
 
         pembilang += x * nilaiFuzzy;
         penyebut += nilaiFuzzy;
     }
 
-    if (penyebut === 0) {
-        return 0;
-    }
-
-    return pembilang / penyebut;
+    return penyebut === 0 ? 0 : pembilang / penyebut;
 }
 
-
-// 7. MENENTUKAN KATEGORI KINERJA
-
 function kategoriKinerja(nilai) {
-    if (nilai < 40) {
-        return "Buruk";
-    }
-
-    if (nilai < 70) {
-        return "Cukup";
-    }
-
+    if (nilai < 40) return "Buruk";
+    if (nilai < 70) return "Cukup";
     return "Baik";
 }
 
-
-// 8. PROSES UTAMA PERHITUNGAN FUZZY
-
 function hitungKinerja(disiplin, produktivitas, tanggungJawab) {
-
     const fuzzyDisiplin = fuzzifikasi(disiplin);
     const fuzzyProduktivitas = fuzzifikasi(produktivitas);
     const fuzzyTanggungJawab = fuzzifikasi(tanggungJawab);
@@ -223,35 +160,337 @@ function hitungKinerja(disiplin, produktivitas, tanggungJawab) {
         hasilInferensi.hasilAgregasi
     );
 
-    const kategori = kategoriKinerja(nilaiAkhir);
-
     return {
-        fuzzyDisiplin,
-        fuzzyProduktivitas,
-        fuzzyTanggungJawab,
-        hasilAgregasi: hasilInferensi.hasilAgregasi,
-        aturanAktif: hasilInferensi.aturanAktif,
         nilaiAkhir,
-        kategori
+        kategori: kategoriKinerja(nilaiAkhir),
+        aturanAktif: hasilInferensi.aturanAktif
     };
 }
 
 
 /* =========================================
-   BAGIAN B: FORM PENILAIAN KARYAWAN
+   BAGIAN B: PENYIMPANAN DATA LOKAL
 ========================================= */
 
-const form = document.getElementById("formPenilaian");
+function ambilData(kunci) {
+    try {
+        return JSON.parse(localStorage.getItem(kunci)) || [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function simpanData(kunci, data) {
+    localStorage.setItem(kunci, JSON.stringify(data));
+}
+
+function usernameNormal(username) {
+    return username.trim().toLowerCase();
+}
+
+function ambilAkun() {
+    return ambilData("akunKinerjaKu");
+}
+
+function ambilPenilaian() {
+    return ambilData("dataPenilaianKinerjaKu");
+}
+
+
+/* =========================================
+   BAGIAN C: ELEMEN WEBSITE
+========================================= */
+
+const halamanLogin = document.getElementById("halamanLogin");
+const halamanDashboard = document.getElementById("halamanDashboard");
+
+const formLogin = document.getElementById("formLogin");
+const formRegistrasi = document.getElementById("formRegistrasi");
+const formPenilaian = document.getElementById("formPenilaian");
+
+const bagianLogin = document.getElementById("bagianLogin");
+const bagianRegistrasi = document.getElementById("bagianRegistrasi");
+
+const pesanLogin = document.getElementById("pesanLogin");
+const pesanRegistrasi = document.getElementById("pesanRegistrasi");
+
 const hasilPenilaian = document.getElementById("hasilPenilaian");
+const namaPengguna = document.getElementById("namaPengguna");
+const rolePengguna = document.getElementById("rolePengguna");
+
+const akunKaryawan = document.getElementById("akunKaryawan");
+const menuPenilaian = document.getElementById("menuPenilaian");
 
 
-// 9. PROSES KETIKA TOMBOL HITUNG DIKLIK
+/* =========================================
+   BAGIAN D: AKUN ADMIN
+========================================= */
 
-form.addEventListener("submit", function(event) {
+// Ganti username dan password ini sebelum digunakan.
+// Ini hanya untuk demonstrasi, bukan autentikasi aman.
 
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "12345";
+
+
+/* =========================================
+   BAGIAN E: REGISTRASI KARYAWAN
+========================================= */
+
+document.getElementById("linkDaftar").addEventListener("click", function(event) {
     event.preventDefault();
 
-    const nama = document.getElementById("nama").value.trim();
+    bagianLogin.style.display = "none";
+    bagianRegistrasi.style.display = "block";
+
+    pesanRegistrasi.textContent = "";
+});
+
+document.getElementById("linkLogin").addEventListener("click", function(event) {
+    event.preventDefault();
+
+    bagianRegistrasi.style.display = "none";
+    bagianLogin.style.display = "block";
+
+    pesanLogin.textContent = "";
+});
+
+formRegistrasi.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const nama = document.getElementById("namaDaftar").value.trim();
+    const username = usernameNormal(
+        document.getElementById("usernameDaftar").value
+    );
+    const password = document.getElementById("passwordDaftar").value;
+    const konfirmasi = document.getElementById("konfirmasiPassword").value;
+
+    if (!nama || !username || !password) {
+        pesanRegistrasi.textContent = "Semua kolom wajib diisi.";
+        return;
+    }
+
+    if (!/^[a-z0-9_.-]{4,20}$/.test(username)) {
+        pesanRegistrasi.textContent =
+            "Username 4-20 karakter, gunakan huruf kecil, angka, titik, garis bawah, atau tanda hubung.";
+        return;
+    }
+
+    if (username === ADMIN_USERNAME) {
+        pesanRegistrasi.textContent = "Username tidak tersedia.";
+        return;
+    }
+
+    if (password.length < 6) {
+        pesanRegistrasi.textContent =
+            "Password minimal terdiri dari 6 karakter.";
+        return;
+    }
+
+    if (password !== konfirmasi) {
+        pesanRegistrasi.textContent =
+            "Konfirmasi password tidak sama.";
+        return;
+    }
+
+    const akun = ambilAkun();
+
+    const sudahAda = akun.some(
+        user => user.username === username
+    );
+
+    if (sudahAda) {
+        pesanRegistrasi.textContent =
+            "Username sudah digunakan. Silakan gunakan username lain.";
+        return;
+    }
+
+    akun.push({
+        nama: nama,
+        username: username,
+        password: password,
+        role: "karyawan"
+    });
+
+    simpanData("akunKinerjaKu", akun);
+
+    formRegistrasi.reset();
+
+    bagianRegistrasi.style.display = "none";
+    bagianLogin.style.display = "block";
+
+    document.getElementById("jenisLogin").value = "karyawan";
+    document.getElementById("username").value = username;
+
+    pesanLogin.textContent =
+        "Registrasi berhasil. Silakan login menggunakan akun baru Anda.";
+});
+
+
+/* =========================================
+   BAGIAN F: LOGIN
+========================================= */
+
+formLogin.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const jenis = document.getElementById("jenisLogin").value;
+    const username = usernameNormal(
+        document.getElementById("username").value
+    );
+    const password = document.getElementById("password").value;
+
+    let pengguna = null;
+
+    if (jenis === "admin") {
+        if (
+            username === ADMIN_USERNAME &&
+            password === ADMIN_PASSWORD
+        ) {
+            pengguna = {
+                nama: "Administrator",
+                username: ADMIN_USERNAME,
+                role: "admin"
+            };
+        }
+    } else {
+        const akun = ambilAkun();
+
+        pengguna = akun.find(user =>
+            user.username === username &&
+            user.password === password &&
+            user.role === "karyawan"
+        ) || null;
+    }
+
+    if (!pengguna) {
+        pesanLogin.textContent =
+            "Username, password, atau jenis akun tidak sesuai.";
+
+        document.getElementById("password").value = "";
+        return;
+    }
+
+    sessionStorage.setItem("penggunaAktif", JSON.stringify({
+        nama: pengguna.nama,
+        username: pengguna.username,
+        role: pengguna.role
+    }));
+
+    formLogin.reset();
+    pesanLogin.textContent = "";
+
+    tampilkanDashboard();
+});
+
+
+/* =========================================
+   BAGIAN G: PENGATURAN DASHBOARD
+========================================= */
+
+function ambilPenggunaAktif() {
+    try {
+        return JSON.parse(sessionStorage.getItem("penggunaAktif"));
+    } catch (error) {
+        return null;
+    }
+}
+
+function tampilkanDashboard() {
+    const pengguna = ambilPenggunaAktif();
+
+    if (!pengguna) {
+        halamanLogin.style.display = "flex";
+        halamanDashboard.style.display = "none";
+        return;
+    }
+
+    halamanLogin.style.display = "none";
+    halamanDashboard.style.display = "flex";
+
+    namaPengguna.textContent = pengguna.nama;
+    rolePengguna.textContent =
+        pengguna.role === "admin" ? "ADMIN" : "KARYAWAN";
+
+    const admin = pengguna.role === "admin";
+
+    // Menu input hanya untuk admin
+    document.getElementById("penilaian").style.display =
+        admin ? "block" : "none";
+
+    menuPenilaian.style.display =
+        admin ? "block" : "none";
+
+    document.getElementById("judulSelamatDatang").textContent =
+        admin
+            ? "Selamat Datang, Admin!"
+            : "Selamat Datang, " + pengguna.nama + "!";
+
+    document.getElementById("deskripsiSelamatDatang").textContent =
+        admin
+            ? "Silakan kelola data dan lakukan penilaian kinerja karyawan."
+            : "Berikut adalah hasil penilaian kinerja Anda.";
+
+    document.getElementById("judulHasil").textContent =
+        admin ? "Seluruh Hasil Penilaian" : "Hasil Penilaian Saya";
+
+    document.getElementById("deskripsiHasil").textContent =
+        admin
+            ? "Daftar hasil penilaian seluruh karyawan."
+            : "Berikut hasil penilaian berdasarkan akun Anda.";
+
+    if (admin) {
+        perbaruiPilihanKaryawan();
+    }
+
+    tampilkanHasil();
+}
+
+
+/* =========================================
+   BAGIAN H: PILIH AKUN KARYAWAN
+========================================= */
+
+function perbaruiPilihanKaryawan() {
+    const akun = ambilAkun();
+
+    akunKaryawan.innerHTML =
+        '<option value="">Pilih username karyawan</option>';
+
+    akun.forEach(user => {
+        const option = document.createElement("option");
+        option.value = user.username;
+        option.textContent = user.nama + " (" + user.username + ")";
+        akunKaryawan.appendChild(option);
+    });
+}
+
+
+/* =========================================
+   BAGIAN I: INPUT DAN HITUNG PENILAIAN
+========================================= */
+
+formPenilaian.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const pengguna = ambilPenggunaAktif();
+
+    if (!pengguna || pengguna.role !== "admin") {
+        alert("Hanya Admin yang dapat menginput penilaian.");
+        return;
+    }
+
+    const username = akunKaryawan.value;
+
+    const akun = ambilAkun();
+    const karyawan = akun.find(user =>
+        user.username === username
+    );
+
+    if (!karyawan) {
+        alert("Pilih akun karyawan yang terdaftar.");
+        return;
+    }
 
     const disiplin = Number(
         document.getElementById("disiplin").value
@@ -266,7 +505,6 @@ form.addEventListener("submit", function(event) {
     );
 
     if (
-        nama === "" ||
         !Number.isFinite(disiplin) ||
         !Number.isFinite(produktivitas) ||
         !Number.isFinite(tanggungJawab) ||
@@ -274,7 +512,7 @@ form.addEventListener("submit", function(event) {
         produktivitas < 0 || produktivitas > 100 ||
         tanggungJawab < 0 || tanggungJawab > 100
     ) {
-        alert("Masukkan data dengan benar. Nilai harus 0-100.");
+        alert("Nilai harus berada di antara 0 sampai 100.");
         return;
     }
 
@@ -284,147 +522,163 @@ form.addEventListener("submit", function(event) {
         tanggungJawab
     );
 
-    hasilPenilaian.innerHTML = `
-        <div class="result-data">
-            <h3>Hasil Penilaian Karyawan</h3>
+    const dataPenilaian = ambilPenilaian();
 
-            <p>
-                <strong>Nama Karyawan:</strong>
-                <span id="namaHasil"></span>
-            </p>
+    dataPenilaian.push({
+        id: Date.now(),
+        username: karyawan.username,
+        nama: karyawan.nama,
+        disiplin: disiplin,
+        produktivitas: produktivitas,
+        tanggungJawab: tanggungJawab,
+        nilaiAkhir: hasil.nilaiAkhir,
+        kategori: hasil.kategori,
+        aturanAktif: hasil.aturanAktif,
+        tanggal: new Date().toLocaleString("id-ID")
+    });
 
-            <p><strong>Kedisiplinan:</strong> ${disiplin}</p>
-            <p><strong>Produktivitas:</strong> ${produktivitas}</p>
-            <p><strong>Tanggung Jawab:</strong> ${tanggungJawab}</p>
+    simpanData("dataPenilaianKinerjaKu", dataPenilaian);
 
-            <hr style="margin: 15px 0; border: 1px solid #bfdbfe;">
+    formPenilaian.reset();
 
-            <p>Nilai Akhir Kinerja:</p>
+    alert("Penilaian berhasil disimpan.");
 
-            <div class="result-score">
-                ${hasil.nilaiAkhir.toFixed(2)}
-            </div>
-
-            <span class="result-category">
-                Kategori: ${hasil.kategori}
-            </span>
-
-            <p style="margin-top: 15px; font-size: 13px;">
-                Aturan fuzzy yang aktif:
-                ${hasil.aturanAktif} dari 27 aturan
-            </p>
-
-            <p style="margin-top: 8px; font-size: 12px;">
-                Metode: Fuzzy Mamdani - Centroid
-            </p>
-        </div>
-    `;
-
-    // Nama dimasukkan sebagai teks, bukan HTML
-    document.getElementById("namaHasil").textContent = nama;
-});
-
-
-// 10. RESET FORM DAN HASIL PENILAIAN
-
-form.addEventListener("reset", function() {
-
-    hasilPenilaian.innerHTML = `
-        <div class="result-placeholder">
-            <div class="result-icon">📊</div>
-            <h3>Belum Ada Penilaian</h3>
-            <p>
-                Silakan masukkan nilai karyawan
-                dan klik Hitung Kinerja.
-            </p>
-        </div>
-    `;
+    tampilkanHasil();
 });
 
 
 /* =========================================
-   BAGIAN C: FITUR LOGIN DAN LOGOUT
+   BAGIAN J: MENAMPILKAN HASIL PENILAIAN
 ========================================= */
 
-// Akun untuk demonstrasi
-const usernameBenar = "admin";
-const passwordBenar = "12345";
+function tampilkanHasil() {
+    const pengguna = ambilPenggunaAktif();
 
-// Mengambil elemen halaman
-const halamanLogin = document.getElementById("halamanLogin");
-const halamanDashboard = document.getElementById("halamanDashboard");
-const formLogin = document.getElementById("formLogin");
-const tombolLogout = document.getElementById("tombolLogout");
-const pesanLogin = document.getElementById("pesanLogin");
-const namaPengguna = document.getElementById("namaPengguna");
+    if (!pengguna) return;
 
+    const semuaPenilaian = ambilPenilaian();
 
-// 11. MEMERIKSA STATUS LOGIN
+    let dataTampil;
 
-function periksaLogin() {
-
-    const statusLogin = sessionStorage.getItem("statusLogin");
-
-    if (statusLogin === "aktif") {
-
-        halamanLogin.style.display = "none";
-        halamanDashboard.style.display = "flex";
-
-        namaPengguna.textContent =
-            sessionStorage.getItem("usernameAktif") || "Administrator";
-
+    if (pengguna.role === "admin") {
+        dataTampil = semuaPenilaian;
     } else {
-
-        halamanLogin.style.display = "flex";
-        halamanDashboard.style.display = "none";
+        dataTampil = semuaPenilaian.filter(data =>
+            data.username === pengguna.username
+        );
     }
+
+    if (dataTampil.length === 0) {
+        hasilPenilaian.innerHTML = `
+            <div class="result-placeholder">
+                <div class="result-icon">📊</div>
+                <h3>Belum Ada Penilaian</h3>
+                <p>
+                    ${
+                        pengguna.role === "admin"
+                        ? "Belum ada data penilaian yang dimasukkan."
+                        : "Belum ada hasil penilaian untuk akun Anda."
+                    }
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    hasilPenilaian.innerHTML = "";
+
+    // Tampilkan data terbaru di bagian atas
+    dataTampil.slice().reverse().forEach(data => {
+        const kartu = document.createElement("div");
+        kartu.className = "result-data";
+
+        const judul = document.createElement("h3");
+        judul.textContent = "Hasil Penilaian Karyawan";
+        kartu.appendChild(judul);
+
+        function tambahBaris(label, nilai) {
+            const p = document.createElement("p");
+            const strong = document.createElement("strong");
+            strong.textContent = label + ": ";
+            p.appendChild(strong);
+            p.appendChild(document.createTextNode(String(nilai)));
+            kartu.appendChild(p);
+        }
+
+        tambahBaris("Nama Karyawan", data.nama);
+
+        if (pengguna.role === "admin") {
+            tambahBaris("Username", data.username);
+        }
+
+        tambahBaris("Kedisiplinan", data.disiplin);
+        tambahBaris("Produktivitas", data.produktivitas);
+        tambahBaris("Tanggung Jawab", data.tanggungJawab);
+        tambahBaris("Tanggal Penilaian", data.tanggal);
+
+        const garis = document.createElement("hr");
+        garis.style.margin = "15px 0";
+        kartu.appendChild(garis);
+
+        const labelNilai = document.createElement("p");
+        labelNilai.textContent = "Nilai Akhir Kinerja:";
+        kartu.appendChild(labelNilai);
+
+        const nilai = document.createElement("div");
+        nilai.className = "result-score";
+        nilai.textContent = Number(data.nilaiAkhir).toFixed(2);
+        kartu.appendChild(nilai);
+
+        const kategori = document.createElement("span");
+        kategori.className = "result-category";
+        kategori.textContent = "Kategori: " + data.kategori;
+        kartu.appendChild(kategori);
+
+        tambahBaris(
+            "Aturan fuzzy yang aktif",
+            data.aturanAktif + " dari 27 aturan"
+        );
+
+        tambahBaris("Metode", "Fuzzy Mamdani - Centroid");
+
+        hasilPenilaian.appendChild(kartu);
+    });
 }
 
 
-// 12. PROSES LOGIN
+/* =========================================
+   BAGIAN K: LOGOUT
+========================================= */
 
-formLogin.addEventListener("submit", function(event) {
-
-    event.preventDefault();
-
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
-
-    if (
-        username === usernameBenar &&
-        password === passwordBenar
-    ) {
-
-        sessionStorage.setItem("statusLogin", "aktif");
-        sessionStorage.setItem("usernameAktif", username);
-
-        pesanLogin.textContent = "";
-
-        periksaLogin();
-
-    } else {
-
-        pesanLogin.textContent =
-            "Username atau password salah!";
-
-        document.getElementById("password").value = "";
-    }
-});
-
-
-// 13. PROSES LOGOUT
-
-tombolLogout.addEventListener("click", function() {
-
-    sessionStorage.removeItem("statusLogin");
-    sessionStorage.removeItem("usernameAktif");
+document.getElementById("tombolLogout").addEventListener("click", function() {
+    sessionStorage.removeItem("penggunaAktif");
 
     formLogin.reset();
+    formRegistrasi.reset();
 
-    periksaLogin();
+    bagianRegistrasi.style.display = "none";
+    bagianLogin.style.display = "block";
+
+    tampilkanHalamanLogin();
 });
 
+function tampilkanHalamanLogin() {
+    halamanLogin.style.display = "flex";
+    halamanDashboard.style.display = "none";
 
-// 14. JALANKAN PEMERIKSAAN SAAT WEBSITE DIBUKA
+    pesanLogin.textContent = "";
+    pesanRegistrasi.textContent = "";
+}
 
-periksaLogin();
+
+/* =========================================
+   BAGIAN L: SAAT WEBSITE DIBUKA
+========================================= */
+
+const penggunaAwal = ambilPenggunaAktif();
+
+if (penggunaAwal) {
+    tampilkanDashboard();
+} else {
+    tampilkanHalamanLogin();
+}
