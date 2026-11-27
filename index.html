@@ -16,25 +16,79 @@
             <h1>KinerjaKu</h1>
             <p>Sistem Penilaian Kinerja Karyawan</p>
 
-            <form id="formLogin">
-                <div class="login-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username"
-                        placeholder="Masukkan username" required>
-                </div>
+            <div id="bagianLogin">
+                <form id="formLogin">
+                    <div class="login-group">
+                        <label for="jenisLogin">Masuk sebagai</label>
+                        <select id="jenisLogin" required>
+                            <option value="admin">Admin</option>
+                            <option value="karyawan">Karyawan</option>
+                        </select>
+                    </div>
 
-                <div class="login-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password"
-                        placeholder="Masukkan password" required>
-                </div>
+                    <div class="login-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username"
+                            placeholder="Masukkan username" required>
+                    </div>
 
-                <button type="submit" class="login-button">
-                    Login
-                </button>
+                    <div class="login-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password"
+                            placeholder="Masukkan password" required>
+                    </div>
 
-                <p id="pesanLogin" role="alert"></p>
-            </form>
+                    <button type="submit" class="login-button">Login</button>
+                    <p id="pesanLogin" role="alert"></p>
+                </form>
+
+                <p class="teks-daftar">
+                    Belum punya akun?
+                    <a href="#" id="linkDaftar">Daftar sebagai karyawan</a>
+                </p>
+            </div>
+
+            <!-- FORM REGISTRASI KARYAWAN -->
+            <div id="bagianRegistrasi" style="display:none;">
+                <h2>Registrasi Karyawan</h2>
+
+                <form id="formRegistrasi">
+                    <div class="login-group">
+                        <label for="namaDaftar">Nama Lengkap</label>
+                        <input type="text" id="namaDaftar"
+                            placeholder="Masukkan nama lengkap" required>
+                    </div>
+
+                    <div class="login-group">
+                        <label for="usernameDaftar">Username</label>
+                        <input type="text" id="usernameDaftar"
+                            placeholder="Buat username" minlength="4" required>
+                    </div>
+
+                    <div class="login-group">
+                        <label for="passwordDaftar">Password</label>
+                        <input type="password" id="passwordDaftar"
+                            placeholder="Buat password" minlength="6" required>
+                    </div>
+
+                    <div class="login-group">
+                        <label for="konfirmasiPassword">Konfirmasi Password</label>
+                        <input type="password" id="konfirmasiPassword"
+                            placeholder="Ulangi password" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        Daftar Akun
+                    </button>
+
+                    <p id="pesanRegistrasi" role="alert"></p>
+                </form>
+
+                <p class="teks-daftar">
+                    Sudah punya akun?
+                    <a href="#" id="linkLogin">Kembali ke Login</a>
+                </p>
+            </div>
 
             <small>© 2026 KinerjaKu</small>
         </div>
@@ -52,7 +106,9 @@
 
             <nav>
                 <a href="#" class="menu-active">Dashboard</a>
-                <a href="#penilaian">Penilaian Karyawan</a>
+                <a href="#penilaian" id="menuPenilaian">
+                    Penilaian Karyawan
+                </a>
                 <a href="#hasil">Hasil Penilaian</a>
                 <a href="#tentang">Tentang Sistem</a>
             </nav>
@@ -66,7 +122,6 @@
         <!-- MAIN CONTENT -->
         <main class="main-content">
 
-            <!-- HEADER -->
             <header class="header">
                 <div>
                     <h1>Dashboard Penilaian</h1>
@@ -75,7 +130,8 @@
 
                 <div class="profile">
                     <span>👤</span>
-                    <span id="namaPengguna">Administrator</span>
+                    <span id="namaPengguna">Pengguna</span>
+                    <span id="rolePengguna" class="role-label"></span>
 
                     <button type="button" id="tombolLogout"
                         class="btn-logout">
@@ -84,16 +140,15 @@
                 </div>
             </header>
 
-            <!-- WELCOME -->
             <section class="welcome">
-                <h2>Selamat Datang di KinerjaKu!</h2>
-                <p>
+                <h2 id="judulSelamatDatang">Selamat Datang di KinerjaKu!</h2>
+                <p id="deskripsiSelamatDatang">
                     Aplikasi penilaian kinerja karyawan menggunakan
                     metode Fuzzy Logic Mamdani.
                 </p>
             </section>
 
-            <!-- INPUT PENILAIAN -->
+            <!-- INPUT PENILAIAN: KHUSUS ADMIN -->
             <section class="card" id="penilaian">
                 <div class="section-title">
                     <h2>Input Penilaian Karyawan</h2>
@@ -102,9 +157,10 @@
 
                 <form id="formPenilaian">
                     <div class="form-group">
-                        <label for="nama">Nama Karyawan</label>
-                        <input type="text" id="nama"
-                            placeholder="Masukkan nama karyawan" required>
+                        <label for="akunKaryawan">Pilih Akun Karyawan</label>
+                        <select id="akunKaryawan" required>
+                            <option value="">Pilih username karyawan</option>
+                        </select>
                     </div>
 
                     <div class="input-grid">
@@ -147,23 +203,21 @@
             <!-- HASIL PENILAIAN -->
             <section class="card result-card" id="hasil">
                 <div class="section-title">
-                    <h2>Hasil Penilaian</h2>
-                    <p>Hasil perhitungan sistem fuzzy.</p>
+                    <h2 id="judulHasil">Hasil Penilaian</h2>
+                    <p id="deskripsiHasil">
+                        Hasil perhitungan sistem fuzzy.
+                    </p>
                 </div>
 
                 <div id="hasilPenilaian">
                     <div class="result-placeholder">
                         <div class="result-icon">📊</div>
                         <h3>Belum Ada Penilaian</h3>
-                        <p>
-                            Silakan masukkan nilai karyawan
-                            dan klik Hitung Kinerja.
-                        </p>
+                        <p>Belum ada hasil penilaian yang tersedia.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- TENTANG -->
             <section class="card" id="tentang">
                 <div class="section-title">
                     <h2>Tentang Sistem</h2>
