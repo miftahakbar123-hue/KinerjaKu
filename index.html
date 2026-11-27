@@ -4,52 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>KinerjaKu - Penilaian Karyawan</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <!-- HALAMAN LOGIN -->
-<div id="halamanLogin" class="login-page">
-    <div class="login-card">
-        <div class="login-logo">K</div>
-        <h1>KinerjaKu</h1>
-        <p>Sistem Penilaian Kinerja Karyawan</p>
+    <div id="halamanLogin" class="login-page">
+        <div class="login-card">
+            <div class="login-logo">K</div>
+            <h1>KinerjaKu</h1>
+            <p>Sistem Penilaian Kinerja Karyawan</p>
 
-        <form id="formLogin">
-            <div class="login-group">
-                <label for="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Masukkan username"
-                    required
-                >
-            </div>
+            <form id="formLogin">
+                <div class="login-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username"
+                        placeholder="Masukkan username" required>
+                </div>
 
-            <div class="login-group">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Masukkan password"
-                    required
-                >
-            </div>
+                <div class="login-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password"
+                        placeholder="Masukkan password" required>
+                </div>
 
-            <button type="submit" class="login-button">
-                Login
-            </button>
+                <button type="submit" class="login-button">
+                    Login
+                </button>
 
-            <p id="pesanLogin"></p>
-        </form>
+                <p id="pesanLogin" role="alert"></p>
+            </form>
 
-        <small>© 2026 KinerjaKu</small>
+            <small>© 2026 KinerjaKu</small>
+        </div>
     </div>
-</div>
 
-    <div class="container"> id="halamanDashboard">
+    <!-- HALAMAN DASHBOARD -->
+    <div class="container" id="halamanDashboard">
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
@@ -82,17 +74,14 @@
                 </div>
 
                 <div class="profile">
-    <span>👤</span>
-    <span id="namaPengguna">Administrator</span>
+                    <span>👤</span>
+                    <span id="namaPengguna">Administrator</span>
 
-    <button
-        type="button"
-        id="tombolLogout"
-        class="btn-logout"
-    >
-        Logout
-    </button>
-</div>
+                    <button type="button" id="tombolLogout"
+                        class="btn-logout">
+                        Logout
+                    </button>
+                </div>
             </header>
 
             <!-- WELCOME -->
@@ -106,127 +95,76 @@
 
             <!-- INPUT PENILAIAN -->
             <section class="card" id="penilaian">
-
                 <div class="section-title">
                     <h2>Input Penilaian Karyawan</h2>
                     <p>Masukkan nilai setiap aspek kinerja karyawan.</p>
                 </div>
 
                 <form id="formPenilaian">
-
                     <div class="form-group">
                         <label for="nama">Nama Karyawan</label>
-                        <input
-                            type="text"
-                            id="nama"
-                            placeholder="Masukkan nama karyawan"
-                            required
-                        >
+                        <input type="text" id="nama"
+                            placeholder="Masukkan nama karyawan" required>
                     </div>
 
                     <div class="input-grid">
-
                         <div class="form-group">
-                            <label for="disiplin">
-                                Kedisiplinan (0-100)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="disiplin"
-                                min="0"
-                                max="100"
-                                placeholder="Contoh: 80"
-                                required
-                            >
-
-                            <small>
-                                Penilaian kedisiplinan karyawan
-                            </small>
+                            <label for="disiplin">Kedisiplinan (0-100)</label>
+                            <input type="number" id="disiplin"
+                                min="0" max="100" placeholder="Contoh: 80"
+                                required>
+                            <small>Penilaian kedisiplinan karyawan</small>
                         </div>
 
                         <div class="form-group">
-                            <label for="produktivitas">
-                                Produktivitas (0-100)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="produktivitas"
-                                min="0"
-                                max="100"
-                                placeholder="Contoh: 85"
-                                required
-                            >
-
-                            <small>
-                                Penilaian hasil kerja karyawan
-                            </small>
+                            <label for="produktivitas">Produktivitas (0-100)</label>
+                            <input type="number" id="produktivitas"
+                                min="0" max="100" placeholder="Contoh: 85"
+                                required>
+                            <small>Penilaian hasil kerja karyawan</small>
                         </div>
 
                         <div class="form-group">
-                            <label for="tanggungJawab">
-                                Tanggung Jawab (0-100)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="tanggungJawab"
-                                min="0"
-                                max="100"
-                                placeholder="Contoh: 90"
-                                required
-                            >
-
-                            <small>
-                                Penilaian tanggung jawab karyawan
-                            </small>
+                            <label for="tanggungJawab">Tanggung Jawab (0-100)</label>
+                            <input type="number" id="tanggungJawab"
+                                min="0" max="100" placeholder="Contoh: 90"
+                                required>
+                            <small>Penilaian tanggung jawab karyawan</small>
                         </div>
-
                     </div>
 
                     <div class="button-group">
                         <button type="submit" class="btn-primary">
                             Hitung Kinerja
                         </button>
-
                         <button type="reset" class="btn-secondary">
                             Reset
                         </button>
                     </div>
-
                 </form>
             </section>
 
             <!-- HASIL PENILAIAN -->
             <section class="card result-card" id="hasil">
-
                 <div class="section-title">
                     <h2>Hasil Penilaian</h2>
                     <p>Hasil perhitungan sistem fuzzy.</p>
                 </div>
 
                 <div id="hasilPenilaian">
-
                     <div class="result-placeholder">
                         <div class="result-icon">📊</div>
-
                         <h3>Belum Ada Penilaian</h3>
-
                         <p>
                             Silakan masukkan nilai karyawan
                             dan klik Hitung Kinerja.
                         </p>
-
                     </div>
-
                 </div>
-
             </section>
 
             <!-- TENTANG -->
             <section class="card" id="tentang">
-
                 <div class="section-title">
                     <h2>Tentang Sistem</h2>
                 </div>
@@ -239,7 +177,6 @@
                     tanggung jawab, untuk menghasilkan kategori
                     kinerja karyawan.
                 </p>
-
             </section>
 
             <footer>
@@ -251,10 +188,8 @@
             </footer>
 
         </main>
-
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
