@@ -2,7 +2,12 @@
 /* =========================================
    KINERJAKU
    SISTEM FUZZY LOGIC METODE MAMDANI
-   ========================================= */
+========================================= */
+
+
+/* =========================================
+   BAGIAN A: PERHITUNGAN FUZZY MAMDANI
+========================================= */
 
 // 1. FUNGSI KEANGGOTAAN FUZZY
 
@@ -42,7 +47,6 @@ function fuzzifikasi(nilai) {
 // 3. MEMBUAT 27 ATURAN FUZZY
 
 const himpunan = ["rendah", "sedang", "tinggi"];
-
 const aturanFuzzy = [];
 
 for (let disiplin of himpunan) {
@@ -75,14 +79,13 @@ for (let disiplin of himpunan) {
 }
 
 
-// 4. FUNGSI INFERENSI MAMDANI
+// 4. INFERENSI MAMDANI
 
 function inferensiMamdani(
     fuzzyDisiplin,
     fuzzyProduktivitas,
     fuzzyTanggungJawab
 ) {
-
     const hasilAgregasi = {
         buruk: 0,
         cukup: 0,
@@ -92,8 +95,6 @@ function inferensiMamdani(
     let aturanAktif = 0;
 
     for (let aturan of aturanFuzzy) {
-
-        // Mengambil derajat keanggotaan setiap input
 
         const nilaiDisiplin =
             fuzzyDisiplin[aturan.disiplin];
@@ -105,7 +106,6 @@ function inferensiMamdani(
             fuzzyTanggungJawab[aturan.tanggungJawab];
 
         // Operator AND menggunakan MIN
-
         const alpha = Math.min(
             nilaiDisiplin,
             nilaiProduktivitas,
@@ -117,7 +117,6 @@ function inferensiMamdani(
         }
 
         // Agregasi menggunakan MAX
-
         hasilAgregasi[aturan.output] = Math.max(
             hasilAgregasi[aturan.output],
             alpha
@@ -134,7 +133,6 @@ function inferensiMamdani(
 // 5. FUNGSI KEANGGOTAAN OUTPUT
 
 function keanggotaanOutput(kategori, nilai) {
-
     if (kategori === "buruk") {
         return keanggotaanRendah(nilai);
     }
@@ -151,19 +149,13 @@ function keanggotaanOutput(kategori, nilai) {
 }
 
 
-// 6. DEFUZZIFIKASI METODE CENTROID
+// 6. DEFUZZIFIKASI CENTROID
 
 function defuzzifikasi(hasilAgregasi) {
-
     let pembilang = 0;
     let penyebut = 0;
 
-    // Menghitung nilai output dari 0 sampai 100
-    // Dengan interval 0,5
-
     for (let x = 0; x <= 100; x += 0.5) {
-
-        // Implikasi MIN dan agregasi MAX
 
         const buruk = Math.min(
             hasilAgregasi.buruk,
@@ -179,8 +171,6 @@ function defuzzifikasi(hasilAgregasi) {
             hasilAgregasi.baik,
             keanggotaanOutput("baik", x)
         );
-
-        // Agregasi semua output
 
         const nilaiFuzzy = Math.max(
             buruk,
@@ -203,7 +193,6 @@ function defuzzifikasi(hasilAgregasi) {
 // 7. MENENTUKAN KATEGORI KINERJA
 
 function kategoriKinerja(nilai) {
-
     if (nilai < 40) {
         return "Buruk";
     }
@@ -220,15 +209,9 @@ function kategoriKinerja(nilai) {
 
 function hitungKinerja(disiplin, produktivitas, tanggungJawab) {
 
-    // Fuzzifikasi
-
     const fuzzyDisiplin = fuzzifikasi(disiplin);
-
     const fuzzyProduktivitas = fuzzifikasi(produktivitas);
-
     const fuzzyTanggungJawab = fuzzifikasi(tanggungJawab);
-
-    // Inferensi Mamdani
 
     const hasilInferensi = inferensiMamdani(
         fuzzyDisiplin,
@@ -236,13 +219,9 @@ function hitungKinerja(disiplin, produktivitas, tanggungJawab) {
         fuzzyTanggungJawab
     );
 
-    // Defuzzifikasi Centroid
-
     const nilaiAkhir = defuzzifikasi(
         hasilInferensi.hasilAgregasi
     );
-
-    // Kategori akhir
 
     const kategori = kategoriKinerja(nilaiAkhir);
 
@@ -258,20 +237,19 @@ function hitungKinerja(disiplin, produktivitas, tanggungJawab) {
 }
 
 
-// 9. MENGHUBUNGKAN PROGRAM DENGAN FORM HTML
+/* =========================================
+   BAGIAN B: FORM PENILAIAN KARYAWAN
+========================================= */
 
 const form = document.getElementById("formPenilaian");
-
 const hasilPenilaian = document.getElementById("hasilPenilaian");
 
 
-// 10. PROSES KETIKA TOMBOL HITUNG DIKLIK
+// 9. PROSES KETIKA TOMBOL HITUNG DIKLIK
 
 form.addEventListener("submit", function(event) {
 
     event.preventDefault();
-
-    // Mengambil data input
 
     const nama = document.getElementById("nama").value.trim();
 
@@ -287,8 +265,6 @@ form.addEventListener("submit", function(event) {
         document.getElementById("tanggungJawab").value
     );
 
-    // Memastikan input berada pada rentang 0-100
-
     if (
         nama === "" ||
         !Number.isFinite(disiplin) ||
@@ -302,19 +278,14 @@ form.addEventListener("submit", function(event) {
         return;
     }
 
-    // Menjalankan sistem fuzzy
-
     const hasil = hitungKinerja(
         disiplin,
         produktivitas,
         tanggungJawab
     );
 
-    // Menampilkan hasil
-
     hasilPenilaian.innerHTML = `
         <div class="result-data">
-
             <h3>Hasil Penilaian Karyawan</h3>
 
             <p>
@@ -322,17 +293,9 @@ form.addEventListener("submit", function(event) {
                 <span id="namaHasil"></span>
             </p>
 
-            <p>
-                <strong>Kedisiplinan:</strong> ${disiplin}
-            </p>
-
-            <p>
-                <strong>Produktivitas:</strong> ${produktivitas}
-            </p>
-
-            <p>
-                <strong>Tanggung Jawab:</strong> ${tanggungJawab}
-            </p>
+            <p><strong>Kedisiplinan:</strong> ${disiplin}</p>
+            <p><strong>Produktivitas:</strong> ${produktivitas}</p>
+            <p><strong>Tanggung Jawab:</strong> ${tanggungJawab}</p>
 
             <hr style="margin: 15px 0; border: 1px solid #bfdbfe;">
 
@@ -354,41 +317,40 @@ form.addEventListener("submit", function(event) {
             <p style="margin-top: 8px; font-size: 12px;">
                 Metode: Fuzzy Mamdani - Centroid
             </p>
-
         </div>
     `;
 
-    // Menampilkan nama sebagai teks agar aman dari HTML
-
+    // Nama dimasukkan sebagai teks, bukan HTML
     document.getElementById("namaHasil").textContent = nama;
-
 });
 
 
-// 11. RESET HASIL PENILAIAN
+// 10. RESET FORM DAN HASIL PENILAIAN
 
 form.addEventListener("reset", function() {
 
     hasilPenilaian.innerHTML = `
         <div class="result-placeholder">
-
             <div class="result-icon">📊</div>
-
             <h3>Belum Ada Penilaian</h3>
-
             <p>
                 Silakan masukkan nilai karyawan
                 dan klik Hitung Kinerja.
             </p>
-            /* =================================
-   FITUR LOGIN DAN LOGOUT KINERJAKU
-================================= */
+        </div>
+    `;
+});
 
-// Username dan password untuk demonstrasi
+
+/* =========================================
+   BAGIAN C: FITUR LOGIN DAN LOGOUT
+========================================= */
+
+// Akun untuk demonstrasi
 const usernameBenar = "admin";
 const passwordBenar = "12345";
 
-// Mengambil elemen HTML
+// Mengambil elemen halaman
 const halamanLogin = document.getElementById("halamanLogin");
 const halamanDashboard = document.getElementById("halamanDashboard");
 const formLogin = document.getElementById("formLogin");
@@ -396,24 +358,33 @@ const tombolLogout = document.getElementById("tombolLogout");
 const pesanLogin = document.getElementById("pesanLogin");
 const namaPengguna = document.getElementById("namaPengguna");
 
-// Fungsi menampilkan halaman sesuai status login
+
+// 11. MEMERIKSA STATUS LOGIN
+
 function periksaLogin() {
+
     const statusLogin = sessionStorage.getItem("statusLogin");
 
     if (statusLogin === "aktif") {
+
         halamanLogin.style.display = "none";
         halamanDashboard.style.display = "flex";
 
         namaPengguna.textContent =
             sessionStorage.getItem("usernameAktif") || "Administrator";
+
     } else {
+
         halamanLogin.style.display = "flex";
         halamanDashboard.style.display = "none";
     }
 }
 
-// Proses ketika tombol Login ditekan
+
+// 12. PROSES LOGIN
+
 formLogin.addEventListener("submit", function(event) {
+
     event.preventDefault();
 
     const username = document.getElementById("username").value.trim();
@@ -423,13 +394,16 @@ formLogin.addEventListener("submit", function(event) {
         username === usernameBenar &&
         password === passwordBenar
     ) {
+
         sessionStorage.setItem("statusLogin", "aktif");
         sessionStorage.setItem("usernameAktif", username);
 
         pesanLogin.textContent = "";
 
         periksaLogin();
+
     } else {
+
         pesanLogin.textContent =
             "Username atau password salah!";
 
@@ -437,8 +411,11 @@ formLogin.addEventListener("submit", function(event) {
     }
 });
 
-// Proses ketika tombol Logout ditekan
+
+// 13. PROSES LOGOUT
+
 tombolLogout.addEventListener("click", function() {
+
     sessionStorage.removeItem("statusLogin");
     sessionStorage.removeItem("usernameAktif");
 
@@ -447,10 +424,7 @@ tombolLogout.addEventListener("click", function() {
     periksaLogin();
 });
 
-// Memeriksa status login ketika halaman dibuka
+
+// 14. JALANKAN PEMERIKSAAN SAAT WEBSITE DIBUKA
+
 periksaLogin();
-
-        </div>
-    `;
-
-});
